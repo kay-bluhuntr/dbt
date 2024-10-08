@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: dim_orders
+    description: "Orders dimension table"
+    columns:
+      - name: order_id
+        description: ""
+        tests:
+          - unique
+          - relationships:
+              to: ref('stg_ecommerce__orders')
+              field: order_id
+              severity: error
+
+      - name: order_created_at
+        description: ""
+
+      - name: order_shipped_at
+        description: ""
+
+      - name: order_delivered_at
+        description: ""
+
+      - name: order_returned_at
+        description: ""
+
+      - name: order_status
+        description: ""
+
+      - name: num_of_item
+        description: ""
+
+      - name: total_sale_price
+        description: "Sum of sale_price for the whole order"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+          # - dbt_utils.expression_is_true:
+          #     expression: "= total_sold_menswear + total_sold_womenswear"
+
+      - name: total_product_cost
+        description: "Sum of product_cost for the whole order"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: total_profit
+        description: "Sum of sale_price - product_cost for the order"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: total_discount
+        description: ""
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+    #   - name: total_sold_menswear
+    #     description: "Sum of item_sale_price for items in the Menswear department for this order"
+    #     tests:
+    #       - not_null
+    #       - dbt_expectations.expect_column_values_to_be_between:
+    #           min_value: 0
+
+    #   - name: total_sold_womenswear
+    #     description: "Sum of item_sale_price for items in the Womenswear department for this order"
+    #     tests:
+    #       - not_null
+    #       - dbt_expectations.expect_column_values_to_be_between:
+    #           min_value: 0
+
+    # # Column from int_ecommerce__first_order_created
+    #   - name: days_since_first_order
+    #     description: "How many days there were between a user's first order and this one"
+    #     tests:
+    #       - not_null
+    #       - dbt_expectations.expect_column_values_to_be_between:
+    #           min_value: 0

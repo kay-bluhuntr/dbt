@@ -1,0 +1,32 @@
+version: 2
+
+seeds:
+  - name: seed_distribution_centres_new
+    description: "New added distribution_center_id and names"
+    tests:
+      - dbt_expectations.expect_table_row_count_to_equal:
+          value: 2
+
+
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: "Distribution Centre names"
+      - name: latitude
+        description: "Distribution Centre Lat"
+        tests:
+          - not_null
+      - name: longitude
+        description: "Distribution Centre longitude"
+        tests:
+          - not_null
+
+    config:
+      column_types:
+        id: INTEGER
+        name: STRING
+        latitude: FLOAT
+        longitude: FLOAT

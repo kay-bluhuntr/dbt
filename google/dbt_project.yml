@@ -42,3 +42,9 @@ tests:
     +severity: warn
     marts:
       +severity: error
+
+seeds:
+  google:
+    +persist_docs:
+      relation: true
+      columns: true
